@@ -13,12 +13,7 @@
 const PREFIX = "ctl00_SiteContentPlaceHolder_FormView1_";
 const PREFIX3 = "ctl00_SiteContentPlaceHolder_FormView3_"; // Sign & Certify
 
-// Month name → option value mapping (verify against live DS-160 session)
-const MONTH_VALUE = {
-  "JAN": "Jan", "FEB": "Feb", "MAR": "Mar", "APR": "Apr",
-  "MAY": "May", "JUN": "Jun", "JUL": "Jul", "AUG": "Aug",
-  "SEP": "Sep", "OCT": "Oct", "NOV": "Nov", "DEC": "Dec",
-};
+// DS-160 month option values are uppercase 3-letter (JAN, FEB, ...) — same as our extracted format.
 
 function dispatch(el) {
   el.dispatchEvent(new Event("input", { bubbles: true }));
@@ -67,7 +62,7 @@ function parseDate(dateStr) {
   const parts = dateStr.split("-");
   if (parts.length !== 3) return null;
   const [day, mon, year] = parts;
-  return { day: day.replace(/^0/, ""), month: MONTH_VALUE[mon.toUpperCase()] ?? mon, year };
+  return { day: day.replace(/^0/, ""), month: mon.toUpperCase(), year };
 }
 
 function fillCompositeDate(baseId, dateStr) {
