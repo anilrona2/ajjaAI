@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "ajjaAI DS-160 AutoFill",
+  "version": "1.0.0",
+  "description": "Auto-fill the DS-160 visa application form using JSON exported from ajjaAI.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://ceac.state.gov/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ajjaAI DS-160 AutoFill"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://ceac.state.gov/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

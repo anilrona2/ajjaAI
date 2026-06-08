@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: -apple-system, sans-serif; width: 280px; padding: 16px; margin: 0; }
+    h1 { font-size: 16px; margin: 0 0 4px; }
+    p { font-size: 12px; color: #6b7280; margin: 0 0 16px; }
+    button {
+      width: 100%; padding: 9px; font-size: 13px; font-weight: 600;
+      border: none; border-radius: 6px; cursor: pointer; margin-bottom: 8px;
+    }
+    #loadBtn { background: #2563eb; color: #fff; }
+    #loadBtn:hover { background: #1d4ed8; }
+    #clearBtn { background: #f3f4f6; color: #374151; }
+    #clearBtn:hover { background: #e5e7eb; }
+    #status { font-size: 12px; padding: 8px 10px; border-radius: 6px; display: none; }
+    #status.ok { background: #f0fdf4; color: #166534; display: block; }
+    #status.err { background: #fef2f2; color: #dc2626; display: block; }
+    #fileInput { display: none; }
+  </style>
+</head>
+<body>
+  <h1>ajjaAI AutoFill</h1>
+  <p>Load your ds160_data.json to auto-fill the DS-160 form.</p>
+  <button id="loadBtn">Load JSON File</button>
+  <button id="clearBtn">Clear Data</button>
+  <div id="status"></div>
+  <input type="file" id="fileInput" accept=".json" />
+  <script src="popup.js"></script>
+</body>
+</html>
