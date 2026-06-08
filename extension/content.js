@@ -80,7 +80,7 @@ function fillCompositeDate(baseId, dateStr) {
 
 // Page-to-fill mappings keyed by the ?node= value in the URL
 const PAGE_FILLERS = {
-  PersonalInfo1: (data) => {
+  Personal1: (data) => {
     fillText(PREFIX + "tbxFamilyName", data.surname?.value);
     fillText(PREFIX + "tbxGivenName", data.given_name?.value);
     fillText(PREFIX + "tbxFullNameNative", data.full_name_native?.value);
@@ -95,7 +95,7 @@ const PAGE_FILLERS = {
     fillSelect(PREFIX + "ddlPOBCountry", data.pob_country?.value);
   },
 
-  PersonalInfo2: (data) => {
+  Personal2: (data) => {
     fillSelect(PREFIX + "ddlCountryOfCitizenship", data.nationality?.value);
     fillRadio(PREFIX + "rblOtherCitizenship", data.has_other_nationality?.value ?? "N");
     fillSelect(PREFIX + "ddlOtherCountryOfCitizenship", data.other_nationality?.value);
@@ -120,7 +120,7 @@ const PAGE_FILLERS = {
     fillRadio(PREFIX + "rblTravelingWithOthers", data.traveling_with_others?.value ?? "N");
   },
 
-  Passport: (data) => {
+  PptVisa: (data) => {
     fillSelect(PREFIX + "ddlTypeOfPassport", data.passport_type?.value);
     fillText(PREFIX + "tbxPassportNumber", data.passport_number?.value);
     fillText(PREFIX + "tbxPassportBookNumber", data.passport_book_number?.value);
