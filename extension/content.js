@@ -81,18 +81,27 @@ function fillCompositeDate(baseId, dateStr) {
 // Page-to-fill mappings keyed by the ?node= value in the URL
 const PAGE_FILLERS = {
   Personal1: (data) => {
-    fillText(PREFIX + "tbxFamilyName", data.surname?.value);
-    fillText(PREFIX + "tbxGivenName", data.given_name?.value);
-    fillText(PREFIX + "tbxFullNameNative", data.full_name_native?.value);
+    fillText(PREFIX + "tbxAPP_SURNAME", data.surname?.value);
+    fillText(PREFIX + "tbxAPP_GIVEN_NAME", data.given_name?.value);
+    fillText(PREFIX + "tbxAPP_FULL_NAME_NATIVE", data.full_name_native?.value);
     fillRadio(PREFIX + "rblOtherNames", data.has_other_names?.value ?? "N");
-    fillText(PREFIX + "tbxOtherFamilyName", data.other_surname?.value);
-    fillText(PREFIX + "tbxOtherGivenName", data.other_given_name?.value);
-    fillRadio(PREFIX + "rblSex", data.gender?.value);
-    fillSelect(PREFIX + "ddlMaritalStatus", data.marital_status?.value);
-    fillCompositeDate(PREFIX + "compositeDOB", data.dob?.value);
-    fillText(PREFIX + "tbxPOBCity", data.pob_city?.value);
-    fillText(PREFIX + "tbxPOBState", data.pob_state_province?.value);
-    fillSelect(PREFIX + "ddlPOBCountry", data.pob_country?.value);
+    if (data.has_other_names?.value === "Y") {
+      setTimeout(() => {
+        fillText(PREFIX + "tbxAPP_SURNAME_OTHER", data.other_surname?.value);
+        fillText(PREFIX + "tbxAPP_GIVEN_NAME_OTHER", data.other_given_name?.value);
+      }, 800);
+    }
+    fillSelect(PREFIX + "ddlAPP_GENDER", data.gender?.value);
+    fillSelect(PREFIX + "ddlAPP_MARITAL_STATUS", data.marital_status?.value);
+    const dob = parseDate(data.dob?.value);
+    if (dob) {
+      fillSelect(PREFIX + "ddlDOBDay", dob.day);
+      fillSelect(PREFIX + "ddlDOBMonth", dob.month);
+      fillText(PREFIX + "tbxDOBYear", dob.year);
+    }
+    fillText(PREFIX + "tbxAPP_POB_CITY", data.pob_city?.value);
+    fillText(PREFIX + "tbxAPP_POB_ST_PROVINCE", data.pob_state_province?.value);
+    fillSelect(PREFIX + "ddlAPP_POB_CNTRY", data.pob_country?.value);
   },
 
   Personal2: (data) => {
