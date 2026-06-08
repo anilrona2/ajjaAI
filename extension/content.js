@@ -130,7 +130,7 @@ const PAGE_FILLERS = {
     fillCompositeDate(PREFIX + "dtpPassportExpirationDate", data.passport_expiry_date?.value);
   },
 
-  PreviousUSVisa: (data) => {
+  PreviousUSTravel: (data) => {
     fillRadio(PREFIX + "rblPreviouslyIssuedVisa", data.previously_issued_visa?.value ?? "N");
     // Conditional fields appear after UpdatePanel refresh — delay fill
     if (data.previously_issued_visa?.value === "Y") {
