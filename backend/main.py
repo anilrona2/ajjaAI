@@ -1,6 +1,5 @@
-from __future__ import annotations
-import base64
 from io import BytesIO
+from typing import List
 
 from fastapi import FastAPI, File, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -66,7 +65,7 @@ async def health():
 @limiter.limit("10/hour")
 async def extract(
     request: Request,
-    files: list[UploadFile] = File(...),
+    files: List[UploadFile] = File(...),
     x_claude_api_key: str = Header(...),
 ):
     if not x_claude_api_key.startswith("sk-ant-"):

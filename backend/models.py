@@ -1,15 +1,23 @@
 from __future__ import annotations
 from typing import Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 SourceType = Literal["passport", "visa_stamp", "i797"] | None
+_VALID_SOURCES = {"passport", "visa_stamp", "i797"}
 
 
 class FieldValue(BaseModel):
     value: str | None = None
     found: bool = False
-    source: SourceType = None
+    source: str | None = None  # validated below
+
+    @field_validator("source", mode="before")
+    @classmethod
+    def coerce_source(cls, v: object) -> str | None:
+        if v in _VALID_SOURCES:
+            return v
+        return None
 
 
 class DS160Fields(BaseModel):

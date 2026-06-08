@@ -1,13 +1,11 @@
-from __future__ import annotations
 import base64
 import json
 from io import BytesIO
-from pathlib import Path
 
 import anthropic
 from PIL import Image
 
-from models import DS160Fields, FieldValue
+from models import DS160Fields
 
 MODEL = "claude-sonnet-4-6"
 
@@ -30,7 +28,7 @@ YES/NO FIELDS: Use "Y" for yes, "N" for no.
 For each field, return:
 - value: the extracted string value, or null if not found
 - found: true if value was extracted, false if not found
-- source: "passport", "visa_stamp", or "i797" (whichever document it came from), or null
+- source: exactly one of "passport", "visa_stamp", "i797" (whichever document it came from), or null — no other values are valid
 
 Return ONLY valid JSON matching this exact structure — no prose, no markdown fences.
 
@@ -102,24 +100,30 @@ async def extract_fields(
     images: list[tuple[str, str]],  # list of (base64_data, media_type)
     api_key: str,
 ) -> DS160Fields:
-    client = anthropic.Anthropic(api_key=api_key)
+    client = anthropic.AsyncAnthropic(api_key=api_key)
 
-    content: list[dict] = []
+    # Static prompt first with cache_control so it gets cached across calls.
+    # Images follow — they vary per request and are not cached.
+    content: list[dict] = [
+        {
+            "type": "text",
+            "text": EXTRACTION_PROMPT,
+            "cache_control": {"type": "ephemeral"},
+        }
+    ]
     for b64, mime in images:
         content.append({
             "type": "image",
             "source": {"type": "base64", "media_type": mime, "data": b64},
         })
-    content.append({"type": "text", "text": EXTRACTION_PROMPT})
 
-    message = client.messages.create(
+    message = await client.messages.create(
         model=MODEL,
         max_tokens=4096,
         messages=[{"role": "user", "content": content}],
     )
 
     raw = message.content[0].text.strip()
-    # Strip markdown fences if model adds them despite instructions
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
 
