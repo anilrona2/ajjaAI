@@ -192,7 +192,13 @@ function run(data) {
   }
 }
 
+console.log("[ajjaAI] content script loaded, node =", new URL(location.href).searchParams.get("node"));
+
 chrome.storage.local.get("ds160Data", (result) => {
-  if (!result.ds160Data) return;
+  if (!result.ds160Data) {
+    console.log("[ajjaAI] no ds160Data in storage — load JSON via the extension popup first");
+    return;
+  }
+  console.log("[ajjaAI] data found, running filler...");
   run(result.ds160Data);
 });
